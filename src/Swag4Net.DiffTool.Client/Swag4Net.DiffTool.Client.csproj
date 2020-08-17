@@ -1,0 +1,15 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project Sdk="Microsoft.NET.Sdk">
+  <PropertyGroup>
+    <OutputType>Exe</OutputType>
+    <TargetFramework>netcoreapp3.1</TargetFramework>
+    <LangVersion>latestmajor</LangVersion>
+    <Nullable>enable</Nullable>
+    <PackageId>Swag4Net.DiffTool</PackageId>
+    <Title>Swag4Net.DiffTool</Title>
+    <Authors>CodeAnythingPossible</Authors>
+    <Company>CodeAnythingPossible</Company>
+    <Product>Swag4Net</Product>
+  </PropertyGroup>
+  <Import Project="..\..\.paket\Paket.Restore.targets" />
+</Project>
