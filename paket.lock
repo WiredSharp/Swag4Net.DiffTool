@@ -1,11 +1,17 @@
+GENERATE-LOAD-SCRIPTS: ON
 STORAGE: NONE
-RESTRICTION: || (== netcoreapp3.1) (== netstandard2.0) (== netstandard2.1)
+RESTRICTION: || (== netcoreapp3.1) (== netstandard2.1)
 NUGET
   remote: https://api.nuget.org/v3/index.json
-    Microsoft.OpenApi (1.1.4)
-    Microsoft.OpenApi.Readers (1.1.4)
-      Microsoft.OpenApi (>= 1.1.4)
-      SharpYaml (>= 1.6.1)
+    FSharp.Core (5.0)
+    Microsoft.OpenApi (1.2.3)
+    Microsoft.OpenApi.Readers (1.2.3)
+      Microsoft.OpenApi (>= 1.2.3)
+      SharpYaml (>= 1.6.5)
     SharpYaml (1.6.6)
       System.Reflection.TypeExtensions (>= 4.3)
     System.Reflection.TypeExtensions (4.7)
+  remote: d:\dev\nuget-local
+    Swag4Net.Core (0.1.0-pre)
+      Microsoft.OpenApi (>= 1.2.3)
+      Microsoft.OpenApi.Readers (>= 1.2.3)

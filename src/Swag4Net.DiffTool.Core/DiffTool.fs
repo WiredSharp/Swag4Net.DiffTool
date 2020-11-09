@@ -71,7 +71,7 @@ module Comparer =
     let Infos (diffStatuses:ComparisonItem seq) =
         diffStatuses |> Seq.filter (fun d -> d.Level = Info)
 
-    let inline private compareSimple path level (previous:'a when 'a:comparison) (actual:'a) =
+    let inline private compareSimple path level (previous:'a when 'a:equality) (actual:'a) =
         if (previous <> actual) then
             seq { yield modified path level (string previous) (string actual) }
         else
@@ -129,10 +129,6 @@ module Comparer =
 
     let inline private compareOSimple path leveler =
         compareOptionsWithLevel compareSimple (fun x -> string x) path leveler
-    
-    let private compareContact path previousContact actualContact =
-       match previousContact, actualContact with
-       | Email p, Email a -> compareString ("email" :: path) Info p a
         
     let staticLeveler (addedLevel:DiffLevel, removedLevel, modifiedLevel) diffStatus =
         match diffStatus with
@@ -146,31 +142,38 @@ module Comparer =
     let orphanLeveler orphanLevel modifiedLevel =
         staticLeveler (orphanLevel,orphanLevel,modifiedLevel)
     
+    let private compareContact path (previousContact:Contact) (actualContact:Contact) =
+       seq {
+           yield! compareOString ("name" :: path) (isoLeveler Info) previousContact.Name previousContact.Name
+           yield! compareOString ("email" :: path) (isoLeveler Info) previousContact.Email previousContact.Email
+           yield! compareOptions (fun path -> compareSimple path Info) (fun u -> u.ToString()) ("url" :: path) (isoLeveler Info) previousContact.Url previousContact.Url
+       }
+    
     type Contact with
         member this.CompareTo =
             compareContact [] this
             
     let private compareLicense path (previousLicense: License) (actualLicense: License) =
         seq {            
-               yield! compareString ("name" :: path) Info previousLicense.Name actualLicense.Name
-               yield! compareString ("url" :: path) Info previousLicense.Url actualLicense.Url
+               yield! compareOString ("name" :: path) (isoLeveler Info) previousLicense.Name actualLicense.Name
+               yield! compareOptions (fun path -> compareSimple path Info) (fun u -> u.ToString()) ("url" :: path) (isoLeveler Info) previousLicense.Url actualLicense.Url
         }
 
     type License with
         member this.CompareTo =
             compareLicense [] this
         
-    let private compareInfo path (previous: ApiInfo) (actual: ApiInfo) =
+    let private compareInfo path (previous: Infos) (actual: Infos) =
         seq {
-             yield! compareString ("description" :: path) Info previous.Description actual.Description
+             yield! compareOString ("description" :: path) (isoLeveler Info) previous.Description actual.Description
              yield! compareString ("title" :: path) Info previous.Title actual.Title
              yield! compareString ("version" :: path) Info previous.Version actual.Version
-             yield! compareString ("termOfService" :: path) Info previous.TermsOfService actual.TermsOfService
+             yield! compareOptions (fun path -> compareSimple path Info) (fun u -> u.ToString()) ("termOfService" :: path) (isoLeveler Info) previous.TermsOfService actual.TermsOfService
              yield! compareOptions compareContact (fun c -> string c) ("contact" :: path) (isoLeveler Info) previous.Contact actual.Contact
              yield! compareOptions compareLicense (fun lic -> string lic) ("license" :: path) (isoLeveler Info) previous.License actual.License
         }
 
-    type ApiInfo with
+    type Infos with
         member this.CompareTo =
             compareInfo [] this
     
@@ -296,7 +299,7 @@ module Comparer =
             
     let Compare (previous: Api) (actual: Api) =
         seq {
-           yield! compareInfo ["info"] previous.Info actual.Info
+           yield! compareInfo ["info"] previous.Infos actual.Infos
            yield! compareString ["basePath"] Info previous.BasePath actual.BasePath
            yield! compareList sortPath comparePath (fun p -> string p) ["paths"] (staticLeveler (Info, Breaking, Breaking)) previous.Paths actual.Paths
            yield! compareList sortSchema compareSchema (fun d -> string d) ["definitions"] (staticLeveler (Info, Info, Warning)) previous.Definitions actual.Definitions

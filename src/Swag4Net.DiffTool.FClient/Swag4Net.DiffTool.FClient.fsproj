@@ -4,7 +4,7 @@
     <OutputType>Exe</OutputType>
     <TargetFramework>netcoreapp3.1</TargetFramework>
     <PackAsTool>true</PackAsTool>
-    <ToolCommandName>Swag4Net</ToolCommandName>
+    <ToolCommandName>Swagdiff</ToolCommandName>
     <PackageOutputPath>$(PackagesOutputPath)</PackageOutputPath>
   </PropertyGroup>
   <ItemGroup>
@@ -12,9 +12,10 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Domain\*.fs" />
-    <Compile Include="Helpers.fs" />
-    <Compile Include="DiffTool.fs" />
     <Compile Include="Program.fs" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\Swag4Net.DiffTool.Core\Swag4Net.DiffTool.Core.fsproj" />
   </ItemGroup>
   <Import Project="..\..\.paket\Paket.Restore.targets" />
 </Project>

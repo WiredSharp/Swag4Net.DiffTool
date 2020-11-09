@@ -1,6 +1,11 @@
+version 5.241.2
+generate_load_scripts: true
 source https://api.nuget.org/v3/index.json
+source d:\dev\nuget-local
 
 storage: none
-framework: netcore3.1, netstandard2.0, netstandard2.1
+framework: netstandard2.1, netcoreapp3.1
+nuget FSharp.Core
 nuget Microsoft.OpenApi
 nuget Microsoft.OpenApi.Readers
+nuget swag4net.core prerelease

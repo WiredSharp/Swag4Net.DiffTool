@@ -78,11 +78,13 @@ namespace Swag4Net.DiffTool.Client
 
         private static IEnumerable<DiffResult> Compare(ComparisonContext context, OpenApiInfo lhs, OpenApiInfo rhs)
         {
+            
             throw new NotImplementedException();
         }
         
-        public class ComparisonContext
+        internal class ComparisonContext
         {
+            
         }
     }
 
