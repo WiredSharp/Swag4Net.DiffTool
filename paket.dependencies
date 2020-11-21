@@ -4,8 +4,11 @@ source https://api.nuget.org/v3/index.json
 source d:\dev\nuget-local
 
 storage: none
-framework: netstandard2.1, netcoreapp3.1
+framework: netstandard2.1, netstandard2.1, netcoreapp3.1, net5.0
 nuget FSharp.Core
 nuget Microsoft.OpenApi
 nuget Microsoft.OpenApi.Readers
 nuget swag4net.core prerelease
+nuget Microsoft.NET.Test.Sdk
+nuget NUnit
+nuget NUnit3TestAdapter
