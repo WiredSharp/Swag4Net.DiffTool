@@ -1,19 +1,17 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-# Visual Studio 15
-VisualStudioVersion = 15.0.26124.0
+# Visual Studio Version 16
+VisualStudioVersion = 16.0.30717.126
 MinimumVisualStudioVersion = 15.0.26124.0
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "src", "src", "{05F18010-D51B-4998-8CB2-CCEB6BBAF519}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Swag4Net.DiffTool.Client", "src\Swag4Net.DiffTool.Client\Swag4Net.DiffTool.Client.csproj", "{1E9AE6EE-4C7C-4658-9A37-75FB27C96E1A}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Swag4Net.DiffTool.Client", "src\Swag4Net.DiffTool.Client\Swag4Net.DiffTool.Client.csproj", "{1E9AE6EE-4C7C-4658-9A37-75FB27C96E1A}"
 EndProject
-Project("{F2A71F9B-5D33-465A-A702-920D77279786}") = "Swag4Net.DiffTool.FClient", "src\Swag4Net.DiffTool.FClient\Swag4Net.DiffTool.FClient.fsproj", "{5814E0AD-24FA-45D4-8CEA-04E647378C5F}"
-EndProject
-Project("{F2A71F9B-5D33-465A-A702-920D77279786}") = "Swag4Net.DiffTool.Core", "src\Swag4Net.DiffTool.Core\Swag4Net.DiffTool.Core.fsproj", "{8DC1BE9E-D49E-4288-9066-5928F3D47B93}"
+Project("{6EC3EE1D-3C4E-46DD-8F32-0CC8E7565705}") = "Swag4Net.DiffTool.Core", "src\Swag4Net.DiffTool.Core\Swag4Net.DiffTool.Core.fsproj", "{8DC1BE9E-D49E-4288-9066-5928F3D47B93}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "test", "test", "{C12FB626-CC4C-42A8-893E-0BA1EDFF9572}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Swag4Net.DiffTool.Tests", "test\Swag4Net.DiffTool.Tests\Swag4Net.DiffTool.Tests.csproj", "{1A54D175-3758-4267-BDCE-D1F1E71C0121}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Swag4Net.DiffTool.Tests", "test\Swag4Net.DiffTool.Tests\Swag4Net.DiffTool.Tests.csproj", "{1A54D175-3758-4267-BDCE-D1F1E71C0121}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -23,9 +21,6 @@ Global
 		Release|Any CPU = Release|Any CPU
 		Release|x64 = Release|x64
 		Release|x86 = Release|x86
-	EndGlobalSection
-	GlobalSection(SolutionProperties) = preSolution
-		HideSolutionNode = FALSE
 	EndGlobalSection
 	GlobalSection(ProjectConfigurationPlatforms) = postSolution
 		{1E9AE6EE-4C7C-4658-9A37-75FB27C96E1A}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
@@ -40,18 +35,6 @@ Global
 		{1E9AE6EE-4C7C-4658-9A37-75FB27C96E1A}.Release|x64.Build.0 = Release|Any CPU
 		{1E9AE6EE-4C7C-4658-9A37-75FB27C96E1A}.Release|x86.ActiveCfg = Release|Any CPU
 		{1E9AE6EE-4C7C-4658-9A37-75FB27C96E1A}.Release|x86.Build.0 = Release|Any CPU
-		{5814E0AD-24FA-45D4-8CEA-04E647378C5F}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{5814E0AD-24FA-45D4-8CEA-04E647378C5F}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{5814E0AD-24FA-45D4-8CEA-04E647378C5F}.Debug|x64.ActiveCfg = Debug|Any CPU
-		{5814E0AD-24FA-45D4-8CEA-04E647378C5F}.Debug|x64.Build.0 = Debug|Any CPU
-		{5814E0AD-24FA-45D4-8CEA-04E647378C5F}.Debug|x86.ActiveCfg = Debug|Any CPU
-		{5814E0AD-24FA-45D4-8CEA-04E647378C5F}.Debug|x86.Build.0 = Debug|Any CPU
-		{5814E0AD-24FA-45D4-8CEA-04E647378C5F}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{5814E0AD-24FA-45D4-8CEA-04E647378C5F}.Release|Any CPU.Build.0 = Release|Any CPU
-		{5814E0AD-24FA-45D4-8CEA-04E647378C5F}.Release|x64.ActiveCfg = Release|Any CPU
-		{5814E0AD-24FA-45D4-8CEA-04E647378C5F}.Release|x64.Build.0 = Release|Any CPU
-		{5814E0AD-24FA-45D4-8CEA-04E647378C5F}.Release|x86.ActiveCfg = Release|Any CPU
-		{5814E0AD-24FA-45D4-8CEA-04E647378C5F}.Release|x86.Build.0 = Release|Any CPU
 		{8DC1BE9E-D49E-4288-9066-5928F3D47B93}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{8DC1BE9E-D49E-4288-9066-5928F3D47B93}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{8DC1BE9E-D49E-4288-9066-5928F3D47B93}.Debug|x64.ActiveCfg = Debug|Any CPU
@@ -77,10 +60,15 @@ Global
 		{1A54D175-3758-4267-BDCE-D1F1E71C0121}.Release|x86.ActiveCfg = Release|Any CPU
 		{1A54D175-3758-4267-BDCE-D1F1E71C0121}.Release|x86.Build.0 = Release|Any CPU
 	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
 	GlobalSection(NestedProjects) = preSolution
 		{1E9AE6EE-4C7C-4658-9A37-75FB27C96E1A} = {05F18010-D51B-4998-8CB2-CCEB6BBAF519}
-		{5814E0AD-24FA-45D4-8CEA-04E647378C5F} = {05F18010-D51B-4998-8CB2-CCEB6BBAF519}
 		{8DC1BE9E-D49E-4288-9066-5928F3D47B93} = {05F18010-D51B-4998-8CB2-CCEB6BBAF519}
 		{1A54D175-3758-4267-BDCE-D1F1E71C0121} = {C12FB626-CC4C-42A8-893E-0BA1EDFF9572}
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {7E8CFDD3-C141-40FA-B898-2DE277088DD9}
 	EndGlobalSection
 EndGlobal
