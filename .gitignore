@@ -6,3 +6,4 @@ obj/
 *.suo
 .idea/
 .vs/
+/paket-files
