@@ -2,3 +2,7 @@
 bin/
 /.paket/
 /*.user
+obj/
+*.suo
+.idea/
+.vs/
