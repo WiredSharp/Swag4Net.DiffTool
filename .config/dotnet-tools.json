@@ -7,6 +7,12 @@
       "commands": [
         "paket"
       ]
+    },
+    "swag4net.difftool": {
+      "version": "1.0.2",
+      "commands": [
+        "swagdiff"
+      ]
     }
   }
 }

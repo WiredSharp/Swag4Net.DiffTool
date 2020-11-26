@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using Microsoft.OpenApi.Any;
@@ -18,12 +19,11 @@ namespace Swag4Net.DiffTool.Tests
 			const string parameterName = "parameter01";
 			var context = ComparisonContext.FromPath("/path") with { Request = parameterName };
 			var diffs = previous.CompareTo(actual, context).ToArray();
-			Assert.AreEqual(expectedDiff, diffs.Length, "unexpected differences count");
 			foreach (DiffResult diff in diffs)
 			{
-				Assert.AreEqual(context, diff.Context, "unexpected context");
 				TestContext.Progress.WriteLine($"[{diff.Context}] {diff.Kind}: '{diff.Message}'");
 			}
+			Assert.AreEqual(expectedDiff, diffs.Length, "unexpected differences count");
 		}
 
 		[Test]
@@ -70,12 +70,11 @@ namespace Swag4Net.DiffTool.Tests
 				}
 			};
 			var diffs = previousOperation.CompareTo(actualOperation, context).ToArray();
-			Assert.AreEqual(2, diffs.Length, "unexpected differences count");
 			foreach (DiffResult diff in diffs)
 			{
-				Assert.AreEqual(context with { Request = "<Body>" }, diff.Context, "unexpected context");
 				TestContext.Progress.WriteLine($"[{diff.Context}] {diff.Kind}: '{diff.Message}'");
 			}
+			Assert.AreEqual(3, diffs.Length, "unexpected differences count");
 		}
 
 		[Test]
@@ -272,6 +271,13 @@ namespace Swag4Net.DiffTool.Tests
 						  new OpenApiParameter() { Deprecated = true, Required = true, AllowReserved = false },
 						  new OpenApiParameter() { Deprecated = false, Required = false, AllowReserved = true }, 3)
 				{ TestName = "deprecated, required, and allowedReserved modified" };
+				foreach (TestCaseData testCase in Schemas)
+				{
+					yield return new TestCaseData(
+							new OpenApiParameter() { Schema = (OpenApiSchema)testCase.Arguments[0] },
+							new OpenApiParameter() { Schema = (OpenApiSchema)testCase.Arguments[1] }, testCase.Arguments[2])
+						{ TestName = $"parameter with {testCase.TestName}" };
+				}
 			}
 		}
 
@@ -375,7 +381,101 @@ namespace Swag4Net.DiffTool.Tests
 						  }
 						  , 2)
 				{ TestName = "both property added and removed" };
+				yield return new TestCaseData(
+						new OpenApiSchema()
+						{
+							Type = "object",
+							Properties = { ["propName"] = new OpenApiSchema() { Type = "string" } }
+						},
+						new OpenApiSchema()
+						{
+							Type = "object",
+							Properties = { ["propName"] = new OpenApiSchema() { Type = "object" }}
+						}
+						, 1)
+					{ TestName = "property type change" };
+				yield return new TestCaseData(
+						new OpenApiSchema()
+						{
+							Type = "object",
+							Properties = { ["propName"] = new OpenApiSchema() { Type = "string", Enum = { new OpenApiString("v1"), new OpenApiString("v2") } } }
+						},
+						new OpenApiSchema()
+						{
+							Type = "object",
+							Properties = { ["propName"] = new OpenApiSchema() { Type = "string", Enum = { new OpenApiString("v1"), new OpenApiString("v2"), new OpenApiString("v3") } }}
+						}
+						, 1)
+					{ TestName = "property schema enumerated value added" };
+				yield return new TestCaseData(
+						CreateRecursiveSchema(),
+						CreateRecursiveSchema()
+						, 0)
+					{ TestName = "recursive type with no change" };
+				yield return new TestCaseData(
+						CreateRecursiveSchema(),
+						CreateRecursiveSchema(1 ,s => s.Not = new OpenApiSchema())
+						, 1)
+					{ TestName = "recursive type with new 'Not' inheritance constraint" };
+				yield return new TestCaseData(
+						CreateRecursiveSchema(2),
+						CreateRecursiveSchema(2, s => s.Not = new OpenApiSchema())
+						, 1)
+					{ TestName = "recursive type level 2 with new 'Not' inheritance constraint" };
+				yield return new TestCaseData(
+						new OpenApiSchema() { Type = "object", AnyOf = { CreateObjectSchema("R01"), CreateObjectSchema("R02", s => s.Format = "newFormat") } }
+						, new OpenApiSchema() { Type = "object", AnyOf = { CreateObjectSchema("R02", s => s.Format = "newFormat"), CreateObjectSchema("R01") } }, 0)
+					{ TestName = "AnyOf schema constraint reordered" };
+				yield return new TestCaseData(
+						new OpenApiSchema() { Type = "object", AnyOf = { CreateObjectSchema("R01"), CreateObjectSchema(null, s => s.Format = "newFormat") } }
+						, new OpenApiSchema() { Type = "object", AnyOf = { CreateObjectSchema(null, s => s.Format = "newFormat"), CreateObjectSchema("R01") } }, 0)
+					{ TestName = "AnyOf schema constraint reordered with anonymous" };
+				yield return new TestCaseData(
+						new OpenApiSchema() { Type = "object", AnyOf = { CreateObjectSchema("R01"), CreateObjectSchema("R02", s => s.Format = "oldFormat") } }
+						, new OpenApiSchema() { Type = "object", AnyOf = { CreateObjectSchema("R02", s => s.Format = "newFormat"), CreateObjectSchema("R01") } }, 1)
+					{ TestName = "AnyOf schema modified" };
+				yield return new TestCaseData(
+						new OpenApiSchema() { Type = "object", OneOf = { CreateObjectSchema() } }
+						, new OpenApiSchema() { Type = "object", OneOf = { CreateObjectSchema() } }, 0)
+					{ TestName = "OneOf anonymous schema unmodified" };
 			}
+		}
+
+		private static OpenApiSchema CreateRecursiveSchema(int depth = 1, Action<OpenApiSchema> arrange = null)
+		{
+			var recursiveSchema = CreateLinkedSchema(depth, arrange);
+			var properties = recursiveSchema.Properties;
+			while (properties.ContainsKey("child"))
+			{
+				properties = properties["child"].Properties;
+			}
+			properties["child"] = recursiveSchema;
+			return recursiveSchema;
+		}
+		
+		private static OpenApiSchema CreateLinkedSchema(int depth = 1, Action<OpenApiSchema> arrange = null)
+		{
+			var schema = CreateObjectSchema($"Ref{depth:00}");
+			if (depth <= 0)
+			{
+				arrange?.Invoke(schema);
+			}
+			else
+			{
+				schema.Properties.Add("child", CreateLinkedSchema(depth - 1, arrange));
+			}
+			return schema;
+		}
+
+		private static OpenApiSchema CreateObjectSchema(string referenceId = null, Action<OpenApiSchema> arrange = null)
+		{
+			OpenApiSchema schema = new() {Type = "object"};
+			if (referenceId != null)
+			{
+				schema.Reference = new OpenApiReference() {Id = referenceId};
+			}
+			arrange?.Invoke(schema);
+			return schema;
 		}
 	}
 }

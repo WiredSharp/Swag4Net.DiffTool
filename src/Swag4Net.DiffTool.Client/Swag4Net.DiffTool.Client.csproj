@@ -10,6 +10,8 @@
     <Authors>WiredSharp</Authors>
     <Company>CodeAnythingPossible</Company>
     <Product>Swag4Net</Product>
+    <PackAsTool>true</PackAsTool>
+    <ToolCommandName>swagdiff</ToolCommandName>
   </PropertyGroup>
   <Import Project="..\..\.paket\Paket.Restore.targets" />
 </Project>

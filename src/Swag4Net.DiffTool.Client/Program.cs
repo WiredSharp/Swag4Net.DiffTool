@@ -1,26 +1,44 @@
 ﻿using System;
 using System.IO;
 using System.Net.Http;
+using System.Text.Encodings.Web;
+using System.Text.Json;
+using System.Text.Json.Serialization;
 using System.Threading.Tasks;
 using Microsoft.OpenApi.Models;
 using Microsoft.OpenApi.Readers;
 
 namespace Swag4Net.DiffTool.Client
 {
-	class Program
+	internal class Program
 	{
 		static async Task Main(string[] args)
 		{
-			if (args.Length < 2)
+			try
 			{
-				await Console.Error.WriteLineAsync("at least two specifications are required for comparison");
+				if (args.Length < 2)
+				{
+					await Console.Error.WriteLineAsync("at least two specifications are required for comparison");
+				}
+				else
+				{
+					(OpenApiDocument, OpenApiDiagnostic)[]? specs = await Task.WhenAll(
+						ReadSpecificationAsync(args[0]), ReadSpecificationAsync(args[1]));
+
+					Console.WriteLine(
+						JsonSerializer.Serialize(specs[0].Item1.CompareTo(specs[1].Item1), 
+															new JsonSerializerOptions()
+															{
+																WriteIndented = true,
+																IgnoreNullValues = true,
+																Converters = { new JsonStringEnumConverter() },
+																Encoder = JavaScriptEncoder.UnsafeRelaxedJsonEscaping
+															}));
+				}
 			}
-
-			(OpenApiDocument, OpenApiDiagnostic)[]? specs = await Task.WhenAll(ReadSpecificationAsync(args[0]), ReadSpecificationAsync(args[1]));
-
-			foreach (DiffResult diffResult in specs[0].Item1.CompareTo(specs[1].Item1))
+			catch (Exception e)
 			{
-				Console.WriteLine($"[{diffResult.Context}] {diffResult.Kind}: '{diffResult.Message}'");
+				Console.Error.WriteLine($"unable to compare apis specification, something goes wrong: {e.Message}");
 			}
 		}
 		

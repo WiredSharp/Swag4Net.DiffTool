@@ -11,8 +11,8 @@ namespace Swag4Net.DiffTool.Client
 			return Array.Empty<DiffResult>();
 		}
 
-		public static IEnumerable<DiffResult> CompareTo<TValue>(this IEnumerable<TValue> previous,
-			 IEnumerable<TValue> actual,
+		public static IEnumerable<DiffResult> CompareTo<TValue>(this IEnumerable<TValue>? previous,
+			 IEnumerable<TValue>? actual,
 			 Func<TValue, ComparisonContext> getContext, Func<TValue, TValue, int> compare)
 			 where TValue : notnull
 		{
@@ -27,8 +27,8 @@ namespace Swag4Net.DiffTool.Client
 			 where TValue : notnull
 		=> CompareTo(previous, actual, getContext, (_, __) => 0);
 
-		public static IEnumerable<DiffResult> CompareTo<TKey, TValue>(this IEnumerable<TValue> previous,
-				IEnumerable<TValue> actual,
+		public static IEnumerable<DiffResult> CompareTo<TKey, TValue>(this IEnumerable<TValue>? previous,
+				IEnumerable<TValue>? actual,
 				Func<TValue, TKey> getKey,
 				Func<TKey, ComparisonContext> getContext, Func<TKey, TKey, int> compareKey)
 				where TKey : notnull

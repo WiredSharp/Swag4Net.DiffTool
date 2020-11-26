@@ -6,7 +6,7 @@
     <VersionPatch Condition="'$(VersionPatch)'==''">0</VersionPatch>
     <VersionMetadata Condition="'$(VersionMetadata)'==''">pre</VersionMetadata>
     <BuildId Condition="'$(BuildId)'==''">0</BuildId>
-    <Authors>CodeAnythingPossible</Authors>
+    <Authors>WiredSharp</Authors>
     <Company>CodeAnythingPossible Inc.</Company>
     <Product>Swag4Net</Product>
     <Version  Condition="'$(Configuration)'!='Release'">$(VersionMajor).$(VersionMinor).$(VersionPatch)-$(VersionMetadata)</Version>
