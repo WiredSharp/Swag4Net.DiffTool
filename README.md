@@ -12,5 +12,7 @@
 ## TODO
 
 [X] handle type hierarchy
+
 [X] handle recursive schema
+
 [ ] GitHub build pipeline
